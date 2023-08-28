@@ -2,13 +2,12 @@ const http = require('http');
 const url = require('url');
 const fs = require('fs');
 const path = require('path');
-const livereload = require('livereload');
 
 const port = process.argv[2] || 9000;
 
 http.createServer(function (req, res) {
     const parsedUrl = url.parse(req.url);
-    let pathname = `src${parsedUrl.pathname}`;
+    let pathname = `docs${parsedUrl.pathname}`;
     const ext = path.parse(pathname).ext || ".html";
     const map = {
         '.ico': 'image/x-icon',
