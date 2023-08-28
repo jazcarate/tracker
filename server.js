@@ -40,7 +40,6 @@ http.createServer(function (req, res) {
             } else {
                 // if the file is found, set Content-type and send data
                 res.setHeader('Content-type', map[ext] || 'text/plain');
-                res.setHeader('Permissions-Policy', 'gyroscope self, magnetometer self, accelerometer self');
                 res.end(data);
             }
         });

@@ -71,6 +71,7 @@
 <body>
     <h1>Orientation test</h1>
     <p id="position">...</p>
+    <button onclick="request()">Request</button>
 
     <ul id="circle">
         <li>
@@ -90,22 +91,24 @@
     const position = document.getElementById("position");
     const circle = document.getElementById("circle");
 
-
     position.innerText = "Loading...";
-    if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
-        DeviceOrientationEvent.requestPermission()
-            .then(permissionState => {
-                if (permissionState === 'granted') {
-                    window.addEventListener('deviceorientation', (ev) => {
-                        position.innerText = ev.alpha
-                        circle.style.transform = `rotate(${ev.alpha}deg)`;
-                    });
-                } else {
-                    position.innerText = "Denied";
-                }
-            }).catch(err => position.innerText = err);
-    } else {
-        position.innerText = "Not supported :(";
+    window.addEventListener('deviceorientation', (ev) => {
+        position.innerText = ev.alpha
+        circle.style.transform = `rotate(${ev.alpha}deg)`;
+    });
+
+
+    function request() {
+        if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
+            DeviceOrientationEvent.requestPermission()
+                .then(permissionState => {
+                    if (permissionState != 'granted') {
+                        position.innerText = "Denied";
+                    }
+                }).catch(err => position.innerText = `Could not request permision: ${err}`);
+        } else {
+            position.innerText = "Not supported :(";
+        }
     }
 </script>
 
